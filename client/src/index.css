@@ -1,0 +1,379 @@
+@import "tailwindcss";
+
+/* ============================================
+   RUBAIAT'S PORTFOLIO — DESIGN SYSTEM
+   Palette: #000, #FFF, #800000, #FF0000, #808080
+   ============================================ */
+
+@theme {
+  /* Colors */
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-maroon: #800000;
+  --color-red: #FF0000;
+  --color-gray: #808080;
+  --color-gray-100: #F5F5F5;
+  --color-gray-200: #E5E5E5;
+  --color-gray-300: #D4D4D4;
+  --color-gray-400: #A3A3A3;
+  --color-gray-500: #808080;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #171717;
+  --color-gray-950: #0A0A0A;
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, Consolas, monospace;
+
+  /* Spacing */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+  --spacing-100: 25rem;
+  --spacing-120: 30rem;
+  --spacing-128: 32rem;
+
+  /* Animations */
+  --animate-fade-up: fade-up 0.6s ease-out forwards;
+  --animate-fade-in: fade-in 0.4s ease-out forwards;
+  --animate-slide-in-left: slide-in-left 0.5s ease-out forwards;
+  --animate-slide-in-right: slide-in-right 0.5s ease-out forwards;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-grid-move: grid-move 20s linear infinite;
+  --animate-blink: blink 1s step-end infinite;
+}
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap');
+
+/* Keyframes */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(128, 0, 0, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(128, 0, 0, 0.6); }
+}
+
+@keyframes grid-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #800000;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF0000;
+}
+
+/* ============================================
+   BACKGROUND GRID PATTERN
+   ============================================ */
+
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(rgba(128, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(128, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.bg-grid-pattern-light {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, rgba(128, 0, 0, 0.15) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.text-gradient-maroon {
+  background: linear-gradient(135deg, #800000, #FF0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-light {
+  background: linear-gradient(135deg, #000000, #800000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+
+::selection {
+  background-color: #800000;
+  color: #FFFFFF;
+}
+
+/* ============================================
+   MARKDOWN CONTENT STYLES
+   ============================================ */
+
+.markdown-content h1 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem;
+  color: #FFFFFF;
+}
+
+.markdown-content h2 {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.75rem;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(128, 0, 0, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-content h3 {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  color: #E5E5E5;
+}
+
+.markdown-content p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #A3A3A3;
+  margin: 0.75rem 0;
+}
+
+.markdown-content ul, .markdown-content ol {
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+  color: #A3A3A3;
+}
+
+.markdown-content li {
+  margin: 0.35rem 0;
+  line-height: 1.7;
+}
+
+.markdown-content strong {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.markdown-content a {
+  color: #FF0000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.markdown-content a:hover {
+  color: #800000;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #800000;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #808080;
+  font-style: italic;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid rgba(128, 0, 0, 0.3);
+  margin: 2rem 0;
+}
+
+.markdown-content pre {
+  background: #0A0A0A;
+  border: 1px solid #262626;
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.markdown-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.markdown-content p code {
+  background: #262626;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #FF0000;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* Light variant for Artist side / About page */
+.markdown-content-light h1,
+.markdown-content-light h2 {
+  color: #000000;
+}
+
+.markdown-content-light h3 {
+  color: #262626;
+}
+
+.markdown-content-light p,
+.markdown-content-light li {
+  color: #525252;
+}
+
+.markdown-content-light strong {
+  color: #000000;
+}
+
+.markdown-content-light pre {
+  background: #F5F5F5;
+  border-color: #E5E5E5;
+}
+
+.markdown-content-light p code {
+  background: #F5F5F5;
+  color: #800000;
+}
+
+/* ============================================
+   12-COLUMN GRID
+   ============================================ */
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .grid-12 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* ============================================
+   GLASS MORPHISM
+   ============================================ */
+
+.glass {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   LINE ACCENTS
+   ============================================ */
+
+.line-accent {
+  position: relative;
+}
+
+.line-accent::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #800000, #FF0000);
+  transition: width 0.3s ease;
+}
+
+.line-accent:hover::after {
+  width: 100%;
+}
