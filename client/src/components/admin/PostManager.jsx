@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../lib/api';
+import WaxSeal from '../ui/WaxSeal';
 
 const emptyPost = { title: '', content: '', excerpt: '', coverImage: '', tags: '', published: false };
 
@@ -43,29 +44,32 @@ const PostManager = () => {
     try { await api.delete(`/posts/${id}`); load(); } catch {}
   };
 
-  const inputClass = "w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-red transition-colors";
-  const labelClass = "text-gray-400 text-xs uppercase tracking-wider mb-1 block";
+  const inputClass = "w-full bg-[#fbf6eb] border border-[#5e4530]/40 rounded-sm px-3.5 py-2.5 text-[#2c1e16] text-sm focus:outline-none focus:border-[#800000] focus:ring-1 focus:ring-[#800000] transition-colors font-serif shadow-inner";
+  const labelClass = "text-[#4a2c11] text-xs font-bold uppercase tracking-wider mb-1.5 block font-serif";
 
   if (editing !== null) {
     return (
       <div className="max-w-2xl">
-        <button onClick={() => setEditing(null)} className="text-gray-400 hover:text-white text-sm mb-4 flex items-center gap-1">← Back</button>
-        <h2 className="text-white text-lg mb-4">{editing === 'new' ? 'New Post' : 'Edit Post'}</h2>
-        <div className="space-y-4">
+        <button onClick={() => setEditing(null)} className="text-[#6a5342] hover:text-[#2c1e16] text-xs font-mono mb-4 flex items-center gap-1 cursor-pointer">← Back to Ledger</button>
+        <h2 className="text-[#4a2c11] text-xl font-bold font-serif uppercase mb-6 pb-2 border-b border-[#5e4530]/20">{editing === 'new' ? 'Engrave New Manuscript' : 'Revise Manuscript Text'}</h2>
+        <div className="space-y-6">
           <div><label className={labelClass}>Title</label><input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className={inputClass} /></div>
           <div><label className={labelClass}>Excerpt</label><textarea value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} rows={2} className={inputClass} /></div>
           <div><label className={labelClass}>Tags (comma-separated)</label><input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} className={inputClass} placeholder="Node.js, API, Backend" /></div>
           <div><label className={labelClass}>Cover Image URL</label><input value={form.coverImage} onChange={(e) => setForm({ ...form, coverImage: e.target.value })} className={inputClass} /></div>
           <div>
             <label className={labelClass}>Content (Markdown)</label>
-            <textarea value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={16} className={inputClass + " font-mono text-xs"} placeholder="# Article Title&#10;&#10;Write your article in Markdown..." />
+            <textarea value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={16} className={inputClass + " font-mono text-xs leading-relaxed"} placeholder="# Article Title&#10;&#10;Write your article in Markdown..." />
           </div>
-          <div className="flex items-center gap-2">
-            <input type="checkbox" checked={form.published} onChange={(e) => setForm({ ...form, published: e.target.checked })} id="published" className="accent-red" />
-            <label htmlFor="published" className="text-gray-400 text-sm">Published</label>
+          <div className="flex items-center gap-3 py-2">
+            <input type="checkbox" checked={form.published} onChange={(e) => setForm({ ...form, published: e.target.checked })} id="published" className="accent-red-800 w-4 h-4" />
+            <label htmlFor="published" className="text-[#4a2c11] text-sm font-serif font-bold">Publish manuscript to archives</label>
           </div>
-          {msg && <p className={`text-sm ${msg.includes('Error') ? 'text-red' : 'text-green-500'}`}>{msg}</p>}
-          <button onClick={handleSave} disabled={saving} className="px-6 py-2 bg-maroon hover:bg-red text-white text-sm rounded transition-colors disabled:opacity-50">{saving ? 'Saving...' : 'Save Post'}</button>
+          {msg && <p className={`text-sm font-serif italic ${msg.includes('Error') ? 'text-red-750' : 'text-[#800000]'}`}>{msg}</p>}
+          <div className="relative inline-flex items-center gap-4 pt-4 group">
+            <button onClick={handleSave} disabled={saving} className="relative z-10 px-8 py-3.5 bg-[#800000] hover:bg-[#991b1b] text-white text-xs font-bold font-mono uppercase tracking-widest rounded-sm transition-all duration-300 shadow-md disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer border border-[#6b1111]">{saving ? 'Transcribing...' : 'Record Manuscript'}</button>
+            <WaxSeal text="M" size="md" className="transition-transform duration-300 group-hover:scale-110 shadow-lg" />
+          </div>
         </div>
       </div>
     );
@@ -73,20 +77,23 @@ const PostManager = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-white text-lg">Posts ({posts.length})</h2>
-        <button onClick={handleNew} className="px-4 py-2 bg-maroon hover:bg-red text-white text-sm rounded transition-colors">+ New Post</button>
+      <div className="flex items-center justify-between mb-6 pb-2 border-b border-[#5e4530]/20">
+        <h2 className="text-[#4a2c11] text-lg font-bold font-serif uppercase tracking-wider">Manuscript Ledger ({posts.length})</h2>
+        <button onClick={handleNew} className="px-4 py-2 bg-[#800000] hover:bg-[#991b1b] text-white text-xs font-mono uppercase tracking-wider rounded-sm transition-colors border border-[#6b1111] shadow-sm cursor-pointer">+ Add New Manuscript</button>
       </div>
-      <div className="space-y-3">
+      <div className="divide-y divide-[#5e4530]/15">
         {posts.map((p) => (
-          <div key={p._id} className="flex items-center justify-between p-4 border border-gray-800 rounded bg-gray-950">
+          <div key={p._id} className="flex items-center justify-between py-4 hover:bg-[#eddcb8]/20 transition-all px-2">
             <div>
-              <h3 className="text-white text-sm font-medium">{p.title} {!p.published && <span className="text-yellow-500 text-xs ml-2">(Draft)</span>}</h3>
-              <p className="text-gray-500 text-xs">{p.tags?.join(', ')}</p>
+              <h3 className="text-[#2c1e16] text-base font-bold font-serif">
+                {p.title} 
+                {!p.published && <span className="text-red-800 text-[10px] font-mono border border-red-800/40 bg-red-800/5 px-1.5 py-0.5 rounded-sm ml-2 font-bold">[ DRAFT ]</span>}
+              </h3>
+              <p className="text-[#6a5342] text-xs font-mono tracking-wide mt-0.5">{p.tags?.join(' // ')}</p>
             </div>
-            <div className="flex gap-2">
-              <button onClick={() => handleEdit(p)} className="px-3 py-1 border border-gray-700 text-gray-400 hover:text-white text-xs rounded transition-colors">Edit</button>
-              <button onClick={() => handleDelete(p._id)} className="px-3 py-1 border border-gray-700 text-gray-400 hover:text-red text-xs rounded transition-colors">Delete</button>
+            <div className="flex gap-3">
+              <button onClick={() => handleEdit(p)} className="px-3 py-1 border border-[#5e4530]/40 text-[#5c3a21] hover:text-white hover:bg-[#5c3a21] text-xs font-mono rounded-sm transition-colors cursor-pointer">Edit</button>
+              <button onClick={() => handleDelete(p._id)} className="px-3 py-1 border border-[#5e4530]/40 text-[#6a5342] hover:text-white hover:bg-red-800 text-xs font-mono rounded-sm transition-colors cursor-pointer">Delete</button>
             </div>
           </div>
         ))}

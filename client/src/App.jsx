@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
 import { CursorProvider } from './context/CursorContext';
-import CustomCursor from './components/ui/CustomCursor';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -48,7 +47,6 @@ const App = () => (
   <AuthProvider>
     <CursorProvider>
       <BrowserRouter>
-        <CustomCursor />
         <AnimatedRoutes />
       </BrowserRouter>
     </CursorProvider>

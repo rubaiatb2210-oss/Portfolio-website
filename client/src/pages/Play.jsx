@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import GridPattern from '../components/ui/GridPattern';
+import PosterFrame from '../components/ui/PosterFrame';
 
 const WINNING_COMBINATIONS = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
@@ -119,42 +119,73 @@ const Play = () => {
   };
 
   return (
-    <section className="relative pt-24 pb-16 min-h-screen flex flex-col items-center justify-center overflow-hidden">
-      <GridPattern />
-      <div className="relative z-10 max-w-lg w-full px-6 flex flex-col items-center">
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
-          <p className="text-yellow-500 text-xs tracking-[0.3em] uppercase mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>Let's play</p>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-            You Can't Beat Me
-          </h1>
-          <div className="w-16 h-0.5 bg-yellow-500 mx-auto mb-4" />
-          <p className="text-gray-400 text-sm" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-            {winner ? (winner === 'Draw' ? "seee. you can't beat me." : `${winner} wins.`) : (xIsNext ? "> Your turn (X)" : "> hmmm... good move")}
+    <PosterFrame variant="play">
+      {/* Scanline CRT simulation overlay */}
+      <div className="absolute inset-0 bg-scanlines pointer-events-none z-10 opacity-30 select-none" />
+
+      <div className="max-w-lg w-full mx-auto px-4 py-6 md:py-10 flex flex-col items-center">
+        {/* Retro arcade header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          className="text-center mb-8"
+        >
+          <p className="text-yellow-500 text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Let's Play
           </p>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+            You Can't <span className="text-yellow-500 font-serif">Beat Me</span>
+          </h1>
+          <div className="w-20 h-0.5 bg-yellow-500 mx-auto mb-6" />
+
+          {/* CRT Terminal status display box */}
+          <div 
+            className="px-4 py-2 border border-yellow-950 bg-black/60 rounded-sm font-mono text-xs text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.1)] inline-block select-none"
+          >
+            {winner ? (
+              winner === 'Draw' ? (
+                <span>&gt; SEEE, YOU CAN'T BEAT ME.</span>
+              ) : (
+                <span className="text-red-500 animate-pulse">&gt; {winner} WINS. SYSTEM TERMINATED.</span>
+              )
+            ) : (
+              xIsNext ? (
+                <span>&gt; YOUR TURN (X) // WAITING INPUT...</span>
+              ) : (
+                <span className="animate-pulse">&gt; HMMM... THINKING...</span>
+              )
+            )}
+          </div>
         </motion.div>
 
+        {/* Arcade Grid Matrix */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="grid grid-cols-3 gap-2 bg-gray-800 p-2 rounded-lg shadow-[0_0_30px_rgba(234,179,8,0.05)] border border-gray-800"
+          className="grid grid-cols-3 gap-2 bg-yellow-950/20 p-2.5 rounded-sm border border-yellow-950/60 shadow-[0_0_30px_rgba(234,179,8,0.06)]"
         >
           {board.map((cell, index) => (
             <motion.button
               key={index}
-              className={`w-24 h-24 md:w-32 md:h-32 bg-black flex items-center justify-center rounded transition-colors ${!cell && !winner && xIsNext ? 'hover:bg-gray-900 cursor-pointer' : 'cursor-default'
-                } ${winningLine.includes(index) ? 'bg-yellow-500/10' : ''}`}
+              className={`w-24 h-24 md:w-32 md:h-32 bg-black border border-yellow-950/40 flex items-center justify-center rounded-sm transition-all duration-300 ${
+                !cell && !winner && xIsNext 
+                  ? 'hover:bg-neutral-900 hover:border-yellow-500/50 cursor-pointer' 
+                  : 'cursor-default'
+              } ${winningLine.includes(index) ? 'bg-yellow-500/10 border-yellow-500 shadow-[inset_0_0_10px_rgba(234,179,8,0.2)]' : ''}`}
               onClick={() => handleClick(index)}
               whileHover={!cell && !winner && xIsNext ? { scale: 0.98 } : {}}
-              whileTap={!cell && !winner && xIsNext ? { scale: 0.95 } : {}}
+              whileTap={!cell && !winner && xIsNext ? { scale: 0.96 } : {}}
             >
               {cell && (
                 <motion.span
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`text-5xl md:text-7xl font-bold ${cell === 'X' ? 'text-white' : 'text-red'
-                    } ${winningLine.includes(index) ? 'text-yellow-500 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]' : ''}`}
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  className={`text-5xl md:text-7xl font-bold font-mono ${
+                    cell === 'X' 
+                      ? 'text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.6)]' 
+                      : 'text-red drop-shadow-[0_0_6px_rgba(255,0,0,0.6)]'
+                  } ${winningLine.includes(index) ? 'text-yellow-500 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]' : ''}`}
                 >
                   {cell}
                 </motion.span>
@@ -163,19 +194,19 @@ const Play = () => {
           ))}
         </motion.div>
 
+        {/* Reset Button */}
         {winner && (
           <motion.button
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-10 px-8 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest rounded-full transition-all hover:shadow-[0_0_20px_rgba(234,179,8,0.4)]"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="mt-8 px-8 py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase tracking-widest rounded-sm transition-all duration-300 font-mono shadow-[0_0_20px_rgba(234,179,8,0.3)] text-sm border border-yellow-600"
             onClick={resetGame}
           >
-            Play Again
+            [ REBOOT SYSTEM ]
           </motion.button>
         )}
       </div>
-    </section>
+    </PosterFrame>
   );
 };
 
